@@ -1,64 +1,64 @@
-/* Written by:
-Matan Leizerovich 302674304
-Doron Avramov     308140987 */
+/* Written by: Matan Leizerovich 302674304 */
 
 
 /******************************************************************************
 *	==============================                                            *
-*   Matan&Doron Product sales shop					    			          *
+*      Matan Product sales shop					    			              *
 *	==============================                     						  *
 *																		      *
 *   Implemention include:												      *
 *	---------------------													  *
 *                          													  *
-*		1. login                                                              *
-*		2. userLevelOneMenu											       	  *
-*		3. userLevelTwoMenu	        										  *
-*		4. userLevelThreeMenu												  *
-*		5. createTree													      *
-*		6. isTreeEmpty													      *
-*		7. isInputValid													      *
-*		8. createUsersFile													  *
-*		9. isFileExists													      *
-*	   10. writeToLogFile													  *
-*	   11. createLogFile													  *
-*	   12. updateItemsFile													  *
-*	   13. convertToBinaryFile												  *
-*	   14. checkIfUserValid													  *
-*	   15. printUserInfo													  *
-*	   16. createUser													      *
-*	   17. displayUsers													      *
-*	   18. deleteUser													      *
-*	   19. isUserExists													      *
-*	   20. usersAmount													      *
-*	   21. updateUser													      *
-*	   22. printDate													      *
-*	   23. setToDateVar													      *
-*	   24. isDateVaild													      *
-*	   25. printItem													      *
-*	   26. addItem					    								      *
-*	   27. deleteItem													      *
-*	   28. isItemIdExists												      *
-*	   29. updateItem													      *
-*	   30. isItemExists													      *
-*	   31. searchItem													      *
-*	   32. filterThenSearch													  *
-*	   33. isItemExistsByStr												  *
-*	   34. isItemExistsByBoolStr											  *
-*	   35. create_node														  *
-*	   36. insert_iterative													  *
-*	   37. insert_recursive													  *
-*	   38. print_preorder													  *
-*	   39. print_inorder													  *
-*	   40. print_postorder													  *
-*	   41. deltree															  *
-*	   42. search															  *
-*	   43. min_value														  *
-*	   44. max_value														  *
-*	   45. delete_node														  *
-*	   46. print_tree														  *
+*		1. login															  *
+*		2. menu															      *
+*		3. userLevelOneMenu											       	  *
+*		4. userLevelTwoMenu	        										  *
+*		5. userLevelThreeMenu												  *
+*		6. createTree													      *
+*		7. isTreeEmpty													      *
+*		8. isInputValid													      *
+*		9. createUsersFile													  *
+*	   10. isFileExists													      *
+*	   11. writeToLogFile													  *
+*	   12. createLogFile													  *
+*	   13. updateItemsFile													  *
+*	   14. convertToBinaryFile												  *
+*	   15. checkIfUserValid													  *
+*	   16. printUserInfo													  *
+*	   17. createUser													      *
+*	   18. displayUsers													      *
+*	   19. deleteUser													      *
+*	   20. isUserExists													      *
+*	   21. usersAmount													      *
+*	   22. updateUser													      *
+*	   23. printDate													      *
+*	   24. setToDateVar													      *
+*	   25. isDateVaild													      *
+*	   26. printItem													      *
+*	   27. addItem					    								      *
+*	   28. deleteItem													      *
+*	   29. isItemIdExists												      *
+*	   30. updateItem													      *
+*	   31. isItemExists													      *
+*	   32. searchItem													      *
+*	   33. filterThenSearch													  *
+*	   34. isItemExistsByStr												  *
+*	   35. isItemExistsByBoolStr											  *
+*	   36. create_node														  *
+*	   37. insert_iterative													  *
+*	   38. insert_recursive													  *
+*	   39. print_preorder													  *
+*	   40. print_inorder													  *
+*	   41. print_postorder													  *
+*	   42. deltree															  *
+*	   43. search															  *
+*	   44. min_value														  *
+*	   45. max_value														  *
+*	   46. delete_node														  *
+*	   47. print_tree														  *
+*	   48. clrscr															  *
 *																		      *
-*	The code was written by Matan leizerovich and Doron Avramov,	          *
+*	The code was written by Matan leizerovich                   	          *
 *	Based on the following references:		                                  *
 *  	https://www.google.co.il/                                                 *
 *	http://md.hit.ac.il/pluginfile.php/411379/mod_resource/content/1/tree.c   *
@@ -78,8 +78,26 @@ Doron Avramov     308140987 */
 #define LOG_FILE "logfile.txt"
 #define ITEMS_FILE "items.txt"
 #define TEMP_FILE "temp.txt"
-#define USERS_BIN_FILE "users.bin"
-#define ITEMS_BIN_FILE "items.bin"
+#define USER_LEVEL 1
+#define SUPERUSER_LEVEL 2
+#define ADMIN_LEVEL 3
+#define FIRST_OPTION_ON_MENU 1
+#define LAST_OPTION_ON_MENU_LEVEL_ONE 5
+#define LAST_OPTION_ON_MENU_LEVEL_TWO 7
+#define LAST_OPTION_ON_MENU_LEVEL_THREE 11
+#define LAST_OPTION_ON_UPDATE_USER_MENU 5
+#define LAST_OPTION_ON_UPDATE_ITEM_MENU 9
+#define LAST_OPTION_ON_FILTER_AND_SEARCH_MENU 7
+#define MIN_COUNTER 3
+#define MAX_COUNTER 6
+#define MIN_YEAR 1980
+#define MAX_YEAR 2020
+#define MIN_PRICE 1.0
+#define MAX_PRICE 9999.99
+#define MIN_ITEMS_AMOUNT 0
+#define MAX_ITEMS_AMOUNT 100
+
+
 
 /* Global variables */
 
@@ -130,14 +148,16 @@ typedef struct tree {
   /* General functions */
  /*********************/
 
-void login(int*);
-void userLevelOneMenu(tree*, bool*, int itemsId[]);
-void userLevelTwoMenu(tree*, bool*, int itemsId[]);
-void userLevelThreeMenu(tree*, bool*, int itemsId[]);
+char* login(int*);
+void menu(tree*, int, int, int*);
+void userLevelOneMenu(tree*, bool*, int itemsId[], char* );
+void userLevelTwoMenu(tree*, bool*, int itemsId[], char* );
+void userLevelThreeMenu(tree*, bool*, int itemsId[], char* );
 tree* createTree(int itemsId[]);
 bool isTreeEmpty(tree*);
 bool isInputValid(char*, int, int);
 bool isInputFloat(char* , float , float);
+void clrscr(void);
 
 
 /********************/
@@ -146,7 +166,7 @@ bool isInputFloat(char* , float , float);
 
 void createUsersFile(void);
 bool isFileExists(FILE*);
-void writeToLogFile(char*);
+void writeToLogFile(char* ,char*);
 void createLogFile(void);
 void updateItemsFile(Item, char*);
 //void convertToBinaryFile(char* textFileName, char* binaryFileName);

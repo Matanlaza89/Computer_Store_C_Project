@@ -1,6 +1,4 @@
-/* Written by:
-Matan Leizerovich 302674304
-Doron Avramov     308140987 */
+/* Written by: Matan Leizerovich 302674304 */
 
 #define _CRT_SECURE_NO_WARNINGS
 #include "functions.h"
@@ -15,7 +13,7 @@ Doron Avramov     308140987 */
 /*********************/
 
 /* This function let the user to login to the store , also , it checks whether the user exists or not */
-void login(int* userLevel) {
+char* login(int* userLevel) {
 	int numberOfTries = 0;
 	char inputUsername[SIZE] = { 0 }, inputPassword[SIZE] = { 0 };
 
@@ -42,16 +40,50 @@ void login(int* userLevel) {
 	} while (numberOfTries < NUM_OF_ATTEMPTS);
 
 	/* The user has passed the number of attempts */
-	if (numberOfTries == 3) {
+	if (numberOfTries == NUM_OF_ATTEMPTS) {
 		printf("You have passed the number of attempts to login , BYE BYE!\n");
 		exit(0);
 	}
 
-	writeToLogFile("User login to system");
+	writeToLogFile(inputUsername," was log in to the system");
+	return inputUsername;
+}
+
+/* This function selects the main menu by user level*/
+void menu(tree* root, int isLogoutPressed, int userLevel, int* itemsId) {
+	char username[SIZE] = { 0 };
+
+	strcpy(username, login(&userLevel));
+
+	while (TRUE) { 
+		if (isLogoutPressed) {
+			isLogoutPressed = FALSE;
+			clrscr();
+			strcpy(username, login(&userLevel));
+			
+		}
+		switch (userLevel) {
+		case 1: {
+			userLevelOneMenu(root, &isLogoutPressed, itemsId, username);
+			break;	
+		}
+
+		case 2: {
+			userLevelTwoMenu(root, &isLogoutPressed, itemsId, username);
+			break;
+		}
+		case 3: {
+			userLevelThreeMenu(root, &isLogoutPressed, itemsId, username);
+			break;
+		}
+		default:
+			break;
+		}
+	}
 }
 
 /* This function display menu for user level one */
-void userLevelOneMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
+void userLevelOneMenu(tree* root, bool* isLogoutPressed, int itemsId[], char* username) {
 	int userChoice = 0;
 	char  userInput[SIZE] = { 0 }, buffer[1] = { 0 };
 
@@ -60,9 +92,9 @@ void userLevelOneMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
 
 	do {
 		scanf_s("%s", &userInput, SIZE);
-		if (!isInputValid(userInput, 1, 5))
+		if (!isInputValid(userInput, FIRST_OPTION_ON_MENU, LAST_OPTION_ON_MENU_LEVEL_ONE))
 			printf("Wrong input!\nEnter your choice: > ");
-	} while (!isInputValid(userInput, 1, 5));
+	} while (!isInputValid(userInput, FIRST_OPTION_ON_MENU, LAST_OPTION_ON_MENU_LEVEL_ONE));
 
 	userChoice = atoi(userInput);
 
@@ -70,7 +102,7 @@ void userLevelOneMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
 	case 1: {
 		printf("\n========================\n     Items On Store\n========================\n\n");
 		print_inorder(root);
-		writeToLogFile("Item display function enabled");
+		writeToLogFile(username, " enabled item display function");
 		break;
 	}
 	case 2: {
@@ -84,7 +116,7 @@ void userLevelOneMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
 	case 4: {
 		*isLogoutPressed = TRUE;
 		scanf_s("%c", &buffer); // temp statement to clear buffer
-		writeToLogFile("User has signed out from system");
+		writeToLogFile(username, " has signed out from system");
 		printf("\n~ You have logged out of the system ~\n");
 		break;
 	}
@@ -102,7 +134,7 @@ void userLevelOneMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
 }
 
 /* This function display menu for user level two */
-void userLevelTwoMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
+void userLevelTwoMenu(tree* root, bool* isLogoutPressed, int itemsId[], char* username) {
 	int userChoice = 0;
 	char  userInput[SIZE] = { 0 }, buffer[1] = { 0 };
 
@@ -111,9 +143,9 @@ void userLevelTwoMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
 
 	do {
 		scanf_s("%s", userInput, SIZE);
-		if (!isInputValid(userInput, 1, 7))
+		if (!isInputValid(userInput, FIRST_OPTION_ON_MENU, LAST_OPTION_ON_MENU_LEVEL_TWO))
 			printf("Wrong input!\nEnter your choice: > ");
-	} while (!isInputValid(userInput, 1, 7));
+	} while (!isInputValid(userInput, FIRST_OPTION_ON_MENU, LAST_OPTION_ON_MENU_LEVEL_TWO));
 
 	userChoice = atoi(userInput);
 
@@ -121,7 +153,7 @@ void userLevelTwoMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
 	case 1: {
 		printf("\n========================\n     Items On Store\n========================\n\n");
 		print_inorder(root);
-		writeToLogFile("Item display function enabled");
+		writeToLogFile(username, " enabled item display function ");
 		break;
 	}
 	case 2: {
@@ -143,7 +175,7 @@ void userLevelTwoMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
 	case 6: {
 		*isLogoutPressed = TRUE;
 		scanf_s("%c", &buffer); // temp statement to clear buffer
-		writeToLogFile("User has signed out from system");
+		writeToLogFile(username, " has signed out from system");
 		printf("\n~ You have logged out of the system ~\n");
 		break;
 	}
@@ -162,7 +194,7 @@ void userLevelTwoMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
 }
 
 /* This function display menu for user level three */
-void userLevelThreeMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
+void userLevelThreeMenu(tree* root, bool* isLogoutPressed, int itemsId[], char* username) {
 	int userChoice = 0;
 	char  userInput[SIZE] = { 0 }, buffer[1] = { 0 };
 
@@ -171,9 +203,9 @@ void userLevelThreeMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
 
 	do {
 		scanf_s("%s", userInput, SIZE);
-		if (!isInputValid(userInput, 1, 11))
+		if (!isInputValid(userInput, FIRST_OPTION_ON_MENU, LAST_OPTION_ON_MENU_LEVEL_THREE))
 			printf("Wrong input!\nEnter your choice: > ");
-	} while (!isInputValid(userInput, 1, 11));
+	} while (!isInputValid(userInput, FIRST_OPTION_ON_MENU, LAST_OPTION_ON_MENU_LEVEL_THREE));
 
 	userChoice = atoi(userInput);
 
@@ -181,7 +213,7 @@ void userLevelThreeMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
 	case 1: {
 		printf("\n========================\n     Items On Store\n========================\n\n");
 		print_inorder(root);
-		writeToLogFile("Item display function enabled");
+		writeToLogFile(username,  " enabled item display function ");
 		break;
 	}
 	case 2: {
@@ -219,7 +251,7 @@ void userLevelThreeMenu(tree* root, bool* isLogoutPressed, int itemsId[]) {
 	case 10: {
 		*isLogoutPressed = TRUE;
 		scanf_s("%c", &buffer, 1); // temp statement to clear buffer
-		writeToLogFile("User has signed out from system");
+		writeToLogFile(username, " has signed out from system");
 		printf("\n~ You have logged out of the system ~\n");
 		break;
 	}
@@ -250,18 +282,27 @@ tree* createTree(int itemsId[]) {
 	while ((ch = fgetc(fp)) != EOF) {
 		if (ch == '\n') { // looking for the next line
 			fscanf(fp, "%4d %12s %13s %11s %7f %11s %15d %10s", &item.id, item.manufactor, item.model, item.processor, &item.price, boolean, &item.amountInStock, date);
-			//printf("id is: %d , man is: %s , mod is: %s, pro is: %s, price is: %.2f, bool is: %s , amount is: %d, date: %s\n", item.id, item.manufactor, item.model, item.processor, item.price, boolean, item.amountInStock, date);
+			
 
+			/*
 			if (strcmp(boolean, "TRUE") == 0)
 				item.isInStock = TRUE;
 			else
+				item.isInStock = FALSE;*/
+
+			if (item.amountInStock > 0)
+				item.isInStock = TRUE;
+			else
 				item.isInStock = FALSE;
+
+			
 
 			item.manufacturingDate = setToDateVar(date);
 
 			// insert to the tree
 			amountOfitems++;
-			itemsId = (int*)realloc(itemsId, sizeof(int) * (item.id + 1));
+
+			itemsId = (int* )realloc(itemsId, sizeof(int) * (item.id + 1));
 			itemsId[item.id] = item.id;
 
 			insert_recursive(&root, NULL, item);
@@ -272,6 +313,7 @@ tree* createTree(int itemsId[]) {
 	itemsIdArraySize = item.id + 1;
 
 	fclose(fp);
+
 	return root;
 }
 
@@ -352,6 +394,11 @@ bool isInputFloat(char* checkInput, float lowerLimit, float topLimit) {
 	return isValid;
 }
 
+/* This function clears the console screen */
+void clrscr(void) {
+	system("cls");
+}
+
 
 
 /********************/
@@ -374,7 +421,7 @@ void createUsersFile(void) {
 	amountOfUsers++;
 	fclose(fp);
 
-	writeToLogFile("New user was added to the system");
+	writeToLogFile("","admin user was added to the system");
 }
 
 /*  This function check whether file exists or not */
@@ -392,13 +439,13 @@ bool isFileExists(char* filename) {
 }
 
 /* This function write every operation to the log file */
-void writeToLogFile(char* str) {
+void writeToLogFile(char* username, char* textToFile) {
 	FILE* fp;
 	time_t t;
 	time(&t);
 
 	fp = fopen(LOG_FILE, "a"); // append mode
-	fprintf(fp, "%s at %s", str, ctime(&t));
+	fprintf(fp, "%s%s at %s", username, textToFile, ctime(&t));
 
 	fclose(fp);
 }
@@ -429,66 +476,6 @@ void updateItemsFile(Item item, char* filename) {
 	fclose(fp);
 }
 
-/* This function convert text file to binary file
-void convertToBinaryFile(char* textFileName, char* binaryFileName) {
-	FILE* in;
-	FILE* out;
-	int ch = 0;
-	char buf[1000];
-
-	/* Write
-	/* open both files
-
-	in = fopen(textFileName, "r");
-	out = fopen(binaryFileName, "wb");
-
-	/* write to a file
-	//size_t elements_written = fwrite(&p1, sizeof(Point), 1, out); // size_t is size of object
-
-	fprintf(out, "%s", "============================ Users File ============================\n");
-
-	while (fgets(buf, 1000, in) != NULL)
-		fputs(buf, out);		//copy line into Output.txt
-	/*
-	while ((ch = fgetc(fp)) != EOF) {
-		if (ch == '\n') {
-			fscanf(fp, "%s",userLevel, fullnameFromFile);
-			fgets(fullnameFromFile, SIZE, fp); // Special string handling with space
-
-			if (!strcmp(inputUsername, usernameFromFile) == 0) {
-				//copy to the new file!!
-				fprintf(temp, "\n%-15s %-15s %-3d %-20s", usernameFromFile, passwordFromFile, userLevel, fullnameFromFile);
-			}
-
-
-	fclose(in);
-	fclose(out);
-
-	//if (elements_written == 0) {
-	//	return 2; // error code
-
-	/* READ
-	in = fopen(USERS_BIN_FILE, "rb");
-	if (in == NULL) {
-		return 3; // error code
-	}
-
-	char* line = NULL;
-	size_t len = 0;
-	size_t read;
-
-	// wrong command with get line - need to read the file and check if its good after it copied
-	while ((read = getline(&line, &len, in)) != -1) {
-		printf("Retrieved line of length %zu:\n", read);
-		printf("%s", line);
-	}
-
-	fclose(in);
-	if (line)
-		free(line);
-
-}
-*/
 
 /*********************/
 /*  Users  functions */
@@ -568,9 +555,9 @@ void createUser(void) {
 	do {
 		printf("Please enter new user level(1, 2, 3): > ");
 		scanf_s("%s", &inputUserLevel, SIZE);
-		if ((!isInputValid(inputUserLevel, 1, 3)))
+		if ((!isInputValid(inputUserLevel, USER_LEVEL, ADMIN_LEVEL)))
 			printf("Wrong input!\n");
-	} while (!isInputValid(inputUserLevel, 1, 3));
+	} while (!isInputValid(inputUserLevel, USER_LEVEL, ADMIN_LEVEL));
 
 	userLevel = atoi(inputUserLevel);
 
@@ -586,7 +573,9 @@ void createUser(void) {
 
 	fclose(fp);
 
-	writeToLogFile("New user was added to the system");
+	printf("\nUser called %s was added to the system successfully!\n", inputUsername);
+
+	writeToLogFile(inputUsername, " was added to the system");
 }
 
 /* This function display the users from users file */
@@ -610,7 +599,7 @@ void displayUsers(void) {
 
 	fclose(fp);
 
-	writeToLogFile("User view function program has been activated");
+	writeToLogFile("", "User view function program has been activated");
 }
 
 /* This function delete a user and updates the user.txt file */
@@ -628,9 +617,9 @@ void deleteUser(void) {
 			printf("\nInvalid username entered!\n");
 			counter++;
 		}
-		if (counter == 3 || counter == 6)
+		if (counter == MIN_COUNTER || counter == MAX_COUNTER)
 			displayUsers();
-		else if (counter > 6)
+		else if (counter > MAX_COUNTER)
 			return;
 	} while (!isUserExists(inputUsername));
 
@@ -661,7 +650,9 @@ void deleteUser(void) {
 	fclose(temp);
 	rename("temp.txt", USER_FILE_NAME);
 
-	writeToLogFile("User deleted from system");
+	printf("\nUser called %s was deleted from the system successfully!\n", inputUsername);
+
+	writeToLogFile(inputUsername, " deleted from system");
 }
 
 /* This function check if the user is exists in the users file */
@@ -709,7 +700,7 @@ void updateUser(void) {
 	char buffer;
 	char inputUsername[SIZE] = { 0 }, usernameFromFile[SIZE] = { 0 }, passwordFromFile[SIZE] = { 0 }, fullnameFromFile[SIZE] = { 0 }, inputUserLevel[SIZE] = { 0 }, userChoise[SIZE] = { 0 };
 	int userLevel = 0, ch = 0, choise = 0, counter = 0;
-	printf("counter is: %d\n", counter);
+
 	printf("\n===================\n    Update user\n===================\n");
 
 	do {
@@ -719,9 +710,9 @@ void updateUser(void) {
 			printf("\nInvalid username entered!\n");
 			counter++;
 		}
-		if (counter == 3 || counter == 6)
+		if (counter == MIN_COUNTER || counter == MAX_COUNTER)
 			displayUsers();
-		else if (counter > 6)
+		else if (counter > MAX_COUNTER)
 			return;
 	} while (!isUserExists(inputUsername));
 
@@ -746,9 +737,9 @@ void updateUser(void) {
 
 				do {
 					scanf_s("%s", userChoise, SIZE);
-					if (!isInputValid(userChoise, 1, 5))
+					if (!isInputValid(userChoise, FIRST_OPTION_ON_MENU, LAST_OPTION_ON_UPDATE_USER_MENU))
 						printf("Wrong input!\nEnter your choice: > ");
-				} while (!isInputValid(userChoise, 1, 5));
+				} while (!isInputValid(userChoise, FIRST_OPTION_ON_MENU, LAST_OPTION_ON_UPDATE_USER_MENU));
 
 				choise = atoi(userChoise);
 
@@ -762,9 +753,9 @@ void updateUser(void) {
 					do {
 						printf("Please enter new user level(1, 2, 3): > ");
 						scanf_s("%s", &inputUserLevel, SIZE);
-						if ((!isInputValid(inputUserLevel, 1, 3)))
+						if ((!isInputValid(inputUserLevel, USER_LEVEL, ADMIN_LEVEL)))
 							printf("Wrong input!\n");
-					} while (!isInputValid(inputUserLevel, 1, 3));
+					} while (!isInputValid(inputUserLevel, USER_LEVEL, ADMIN_LEVEL));
 
 					userLevel = atoi(inputUserLevel);
 					break;
@@ -782,9 +773,9 @@ void updateUser(void) {
 					do {
 						printf("Please enter new user level(1, 2, 3): > ");
 						scanf_s("%s", &inputUserLevel, SIZE);
-						if ((!isInputValid(inputUserLevel, 1, 3)))
+						if ((!isInputValid(inputUserLevel, USER_LEVEL, ADMIN_LEVEL)))
 							printf("Wrong input!\n");
-					} while (!isInputValid(inputUserLevel, 1, 3));
+					} while (!isInputValid(inputUserLevel, USER_LEVEL, ADMIN_LEVEL));
 
 					userLevel = atoi(inputUserLevel);
 
@@ -818,8 +809,9 @@ void updateUser(void) {
 	fclose(temp);
 	rename("temp.txt", USER_FILE_NAME);
 
-	writeToLogFile("An update was made for a system user");
+	printf("\nUser called %s was updated successfully!\n", inputUsername);
 
+	writeToLogFile(inputUsername, "'s user data was updated");
 }
 
 
@@ -880,7 +872,7 @@ bool isDateVaild(char* str) {
 	}
 
 	/* Check year */
-	if (!(year >= 1980 && year <= 2020))
+	if (!(year >= MIN_YEAR && year <= MAX_YEAR))
 		return FALSE;
 
 	/* Check month */
@@ -939,7 +931,7 @@ void printItem(Item item) {
 
 /*  This function adds a new item to the BST and updates the items file */
 void addItem(tree** root, tree* parent, int itemsId[]) {
-	char buffer, inputDate[SIZE] = { 0 }, inputAmount[SIZE] = { 0 }, strTemp[SIZE] = { 0 }, inputPrice[SIZE] = { 0 };
+	char buffer, inputDate[SIZE] = { 0 }, inputAmount[SIZE] = { 0 }, strTemp[SIZE] = { 0 }, inputPrice[SIZE] = { 0 }, newItem[2*SIZE] = { 0 };
 	bool validInput = FALSE;
 	Item item;
 
@@ -947,11 +939,15 @@ void addItem(tree** root, tree* parent, int itemsId[]) {
 
 	itemsId[item.id] = item.id;
 
+	strcpy(newItem, "A new item called ");
+	printf("\n================\n  Add new item\n================\n");
+
 	printf("\nPlease enter manufactor name: > ");
 	scanf_s("%s", item.manufactor, SIZE);
 
 	printf("Please enter model name: > ");
 	scanf_s("%s", item.model, SIZE);
+	strcat(newItem, item.model);
 
 	do {
 		printf("Please enter processor name (i3/i5/i7): > ");
@@ -964,23 +960,28 @@ void addItem(tree** root, tree* parent, int itemsId[]) {
 	do {
 		printf("Please enter the price: > ");
 		scanf_s("%s", inputPrice, SIZE);
-		if (!isInputFloat(inputPrice, 1.0, 9999.99))
+		if (!isInputFloat(inputPrice, MIN_PRICE, MAX_PRICE))
 			printf("Wrong input!\n");
-	} while (!isInputFloat(inputPrice, 1.0, 9999.99));
+	} while (!isInputFloat(inputPrice, MIN_PRICE, MAX_PRICE));
 
 	item.price = strtod(inputPrice, NULL);
 
-	item.isInStock = TRUE;
+	
 
 	do {
 		printf("Please enter amount of items: > ");
 		scanf_s("%s", &inputAmount, SIZE);
 
-		if (!isInputValid(inputAmount, 1, 100))
+		if (!isInputValid(inputAmount, MIN_ITEMS_AMOUNT, MAX_ITEMS_AMOUNT))
 			printf("Wrong input!\n");
-	} while (!isInputValid(inputAmount, 1, 100));
+	} while (!isInputValid(inputAmount, MIN_ITEMS_AMOUNT, MAX_ITEMS_AMOUNT));
 
 	item.amountInStock = atoi(inputAmount);
+
+	if (item.amountInStock > MIN_ITEMS_AMOUNT)
+		item.isInStock = TRUE;
+	else
+		item.isInStock = FALSE;
 
 	do {
 		printf("Please enter the date ( XX/XX/XXXX ): > ");
@@ -996,8 +997,11 @@ void addItem(tree** root, tree* parent, int itemsId[]) {
 
 	item.manufacturingDate = setToDateVar(inputDate);
 
+
 	/* insert item to the BST */
 	insert_recursive(&root, NULL, item);
+
+	printf("\nNew Item called %s was added to the store successfully!\n", item.model);
 
 	amountOfitems++;
 
@@ -1005,14 +1009,16 @@ void addItem(tree** root, tree* parent, int itemsId[]) {
 	updateItemsFile(item, ITEMS_FILE);
 
 	/* Update log file */
-	writeToLogFile("New item was added to the system");
+	writeToLogFile(newItem, " was added to the system");
+
+	
 }
 
 /* This function deletes an item from the BST and updates the items file*/
 tree* deleteItem(tree* root, int itemsId[]) {
 	int inputId = 0, choice = 0, isInStock = 0, counter = 0;
 	char buffer;
-	char dateHelper[SIZE], userInput[SIZE], day[SIZE], month[SIZE], year[SIZE];
+	char dateHelper[SIZE] = { 0 }, userInput[SIZE] = { 0 }, day[SIZE] = { 0 }, month[SIZE] = { 0 }, year[SIZE] = { 0 }, deletedItem[SIZE] = { 0 };
 	bool wrongInput = FALSE;
 	FILE* fp, * tempFile;
 
@@ -1043,13 +1049,13 @@ tree* deleteItem(tree* root, int itemsId[]) {
 				counter++;
 			}
 
-			if (counter == 3 || counter == 6) {
+			if (counter == MIN_COUNTER || counter == MAX_COUNTER) {
 				printf("\n========================\n     Items On Store\n========================\n\n");
 				print_inorder(root);
 				printf("\n");
-				writeToLogFile("Item display function enabled");
+				writeToLogFile(userInput, " enabled item display function ");
 			}
-			else if (counter > 6)
+			else if (counter > MAX_COUNTER)
 				return;
 		} while (atoi(userInput) == 0 || (!(atoi(userInput) <= runID) || (!isInputValid(userInput, 1, runID) || itemsId[atoi(userInput)] == 0)));
 
@@ -1059,15 +1065,18 @@ tree* deleteItem(tree* root, int itemsId[]) {
 		while (cursor != NULL) {
 			if (cursor->data.id == inputId) {  // the organ that need to be deleted
 				if (cursor == root) { // the first organ in the tree
+					strcpy(deletedItem, cursor->data.model);
 					*root = *root->right;
 					itemsId[inputId] = 0;
 				}
 				else if (cursor->right == NULL) { // the last organ in the tree
+					strcpy(deletedItem, cursor->data.model);
 					root = delete_node(root, cursor->data);
 					itemsId[inputId] = 0;
 					cursor = NULL;
 				}
 				else {
+					strcpy(deletedItem, cursor->data.model);
 					itemsId[inputId] = 0;
 					cursor = cursor->right;
 					root = delete_node(root, cursor->parent->data);
@@ -1093,9 +1102,10 @@ tree* deleteItem(tree* root, int itemsId[]) {
 		fclose(tempFile);
 		rename(TEMP_FILE, ITEMS_FILE);
 
+		printf("\nItem called %s was deleted from the store successfully!\n", deletedItem);
 
 		// Update log file
-		writeToLogFile("Item was deleted");
+		writeToLogFile(deletedItem, " deleted from the store");
 	}
 
 	return root;
@@ -1119,7 +1129,7 @@ bool isItemIdExists(tree* root, int id) {
 void updateItem(tree* root, int validId) {
 	int id = 0, choise = 0, isInStock = 0, numberOfAttempts = 0;
 	char buffer;
-	char inputDate[SIZE] = { 0 }, day[SIZE] = { 0 }, month[SIZE] = { 0 }, year[SIZE] = { 0 }, strTemp[SIZE] = { 0 };
+	char inputDate[SIZE] = { 0 }, day[SIZE] = { 0 }, month[SIZE] = { 0 }, year[SIZE] = { 0 }, strTemp[SIZE] = { 0 }, updatedItem[SIZE] = { 0 };
 	char inputAmount[SIZE] = { 0 }, inputId[SIZE] = { 0 }, inputIsInStock[SIZE] = { 0 }, inputPrice[SIZE] = { 0 }, choiseStr[SIZE] = { 0 };
 	bool wrongInput = FALSE, validInput = FALSE;
 	FILE* fp, * tempFile;
@@ -1153,11 +1163,11 @@ void updateItem(tree* root, int validId) {
 			else
 				printf("\nWrong choise! try again...\n");
 
-			if (numberOfAttempts == 3 || numberOfAttempts == 6 || numberOfAttempts == 9) {
+			if (numberOfAttempts == MIN_COUNTER || numberOfAttempts == MAX_COUNTER) {
 				puts("");
 				print_inorder(root);
 			}
-			else if (numberOfAttempts > 9)
+			else if (numberOfAttempts > MAX_COUNTER)
 				return;
 
 		} while (!isInputValid(inputId, 1, runID) || !isItemIdExists(root, atoi(inputId)));
@@ -1173,6 +1183,7 @@ void updateItem(tree* root, int validId) {
 				// operations to update the updated organ to the items file
 				puts("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 				printItem(cursor->data); // Prints the found organ
+				strcpy(updatedItem, cursor->data.model);
 				puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 
 				printf("1.Change manufacor\n2.Change model\n3.Change processor\n4.Change price\n5.Change item in stock\n6.Change amount in stock\n7.Change manufacturing date\n8.Change all\n9.Back\nEnter your choice: > ");
@@ -1180,9 +1191,9 @@ void updateItem(tree* root, int validId) {
 
 				do {
 					scanf_s("%s", choiseStr, SIZE);
-					if (!isInputValid(choiseStr, 1, 9))
+					if (!isInputValid(choiseStr, FIRST_OPTION_ON_MENU, LAST_OPTION_ON_UPDATE_ITEM_MENU))
 						printf("Wrong input!\nEnter your choice: > ");
-				} while (!isInputValid(choiseStr, 1, 9));
+				} while (!isInputValid(choiseStr, FIRST_OPTION_ON_MENU, LAST_OPTION_ON_UPDATE_ITEM_MENU));
 
 				choise = atoi(choiseStr);
 
@@ -1210,9 +1221,9 @@ void updateItem(tree* root, int validId) {
 					do {
 						printf("\nPlease enter the new price: > ");
 						scanf_s("%s", inputPrice, SIZE);
-						if (!isInputFloat(inputPrice, 1.0, 9999.99))
+						if (!isInputFloat(inputPrice, MIN_PRICE, MAX_PRICE))
 							printf("Wrong input!");
-					} while (!isInputFloat(inputPrice, 1.0, 9999.99));
+					} while (!isInputFloat(inputPrice, MIN_PRICE, MAX_PRICE));
 
 					cursor->data.price = strtod(inputPrice, NULL);
 
@@ -1222,10 +1233,10 @@ void updateItem(tree* root, int validId) {
 					do {
 						printf("Enter whether the product is in stock (1 - TRUE , 0 - FALSE) : > ");
 						scanf_s("%s", inputIsInStock, SIZE);
-
-						if (!(isInputValid(inputIsInStock, 0, 1)))
+						
+						if (!(isInputValid(inputIsInStock, FALSE, TRUE)))
 							printf("Wrong input!\n");
-					} while (!(isInputValid(inputIsInStock, 0, 1)));
+					} while (!(isInputValid(inputIsInStock, FALSE, TRUE)));
 
 					isInStock = atoi(inputIsInStock);
 
@@ -1236,7 +1247,7 @@ void updateItem(tree* root, int validId) {
 							do {
 								printf("Enter amount of items: > ");
 								scanf_s("%s", &inputAmount, SIZE);
-							} while (!isInputValid(inputAmount, 1, 100));
+							} while (!isInputValid(inputAmount, MIN_ITEMS_AMOUNT, MAX_ITEMS_AMOUNT));
 
 							cursor->data.amountInStock = atoi(inputAmount);
 						}
@@ -1252,12 +1263,13 @@ void updateItem(tree* root, int validId) {
 					do {
 						printf("Enter amount of items: > ");
 						scanf_s("%s", &inputAmount, SIZE);
-					} while (!isInputValid(inputAmount, 0, 100));
+					} while (!isInputValid(inputAmount, MIN_ITEMS_AMOUNT, MAX_ITEMS_AMOUNT));
 
-					if (atoi(inputAmount) != 0)
+					if (atoi(inputAmount) > MIN_ITEMS_AMOUNT)
 						cursor->data.isInStock = TRUE;
 					else
 						cursor->data.isInStock = FALSE;
+
 					cursor->data.amountInStock = atoi(inputAmount);
 					break;
 				}
@@ -1294,9 +1306,9 @@ void updateItem(tree* root, int validId) {
 					do {
 						printf("Please enter the new price: > ");
 						scanf_s("%s", inputPrice, SIZE);
-						if (!isInputFloat(inputPrice, 1.0, 9999.99))
+						if (!isInputFloat(inputPrice, MIN_PRICE, MAX_PRICE))
 							printf("Wrong input!\n");
-					} while (!isInputFloat(inputPrice, 1.0, 9999.99));
+					} while (!isInputFloat(inputPrice, MIN_PRICE, MAX_PRICE));
 
 					cursor->data.price = strtod(inputPrice, NULL);
 
@@ -1304,9 +1316,9 @@ void updateItem(tree* root, int validId) {
 						printf("Enter whether the product is in stock (1 - TRUE , 0 - FALSE) : > ");
 						scanf_s("%s", inputIsInStock, SIZE);
 
-						if (!(isInputValid(inputIsInStock, 0, 1)))
+						if (!(isInputValid(inputIsInStock, FALSE, TRUE)))
 							printf("Wrong input!\n");
-					} while (!(isInputValid(inputIsInStock, 0, 1)));
+					} while (!(isInputValid(inputIsInStock, FALSE, TRUE)));
 
 					isInStock = atoi(inputIsInStock);
 
@@ -1319,9 +1331,9 @@ void updateItem(tree* root, int validId) {
 							do {
 								printf("Enter the new amount of items: > ");
 								scanf_s("%s", &inputAmount, SIZE);
-								if (!isInputValid(inputAmount, 0, 100))
+								if (!isInputValid(inputAmount, MIN_ITEMS_AMOUNT, MAX_ITEMS_AMOUNT))
 									printf("Wrong input!\n");
-							} while (!isInputValid(inputAmount, 0, 100));
+							} while (!isInputValid(inputAmount, MIN_ITEMS_AMOUNT, MAX_ITEMS_AMOUNT));
 							cursor->data.amountInStock = atoi(inputAmount);
 						}
 					}
@@ -1356,16 +1368,17 @@ void updateItem(tree* root, int validId) {
 				sprintf(day, "%d", cursor->data.manufacturingDate.day);
 				sprintf(month, "%d", cursor->data.manufacturingDate.month);
 				sprintf(year, "%d", cursor->data.manufacturingDate.year);
-				fprintf(tempFile, "\n%-4d %-12s %-13s %-11s %-7.2f %-11s %-15d %-10s", cursor->data.id, cursor->data.manufactor, cursor->data.model, cursor->data.processor, cursor->data.price, "TRUE", cursor->data.amountInStock, strcat(strcat(strcat(strcat(day, "/"), month), "/"), year));
+				fprintf(tempFile, "\n%-4d %-12s %-13s %-11s %-7.2f %-11s %-15d %-10s", cursor->data.id, cursor->data.manufactor, cursor->data.model, cursor->data.processor, cursor->data.price, cursor->data.isInStock ? "TRUE" : "FALSE", cursor->data.amountInStock, strcat(strcat(strcat(strcat(day, "/"), month), "/"), year));
 
 				cursor = cursor->right;
 			}
+			
 			else {
 
 				sprintf(day, "%d", cursor->data.manufacturingDate.day);
 				sprintf(month, "%d", cursor->data.manufacturingDate.month);
 				sprintf(year, "%d", cursor->data.manufacturingDate.year);
-				fprintf(tempFile, "\n%-4d %-12s %-13s %-11s %-7.2f %-11s %-15d %-10s", cursor->data.id, cursor->data.manufactor, cursor->data.model, cursor->data.processor, cursor->data.price, "TRUE", cursor->data.amountInStock, strcat(strcat(strcat(strcat(day, "/"), month), "/"), year));
+				fprintf(tempFile, "\n%-4d %-12s %-13s %-11s %-7.2f %-11s %-15d %-10s", cursor->data.id, cursor->data.manufactor, cursor->data.model, cursor->data.processor, cursor->data.price, cursor->data.isInStock ? "TRUE" : "FALSE", cursor->data.amountInStock, strcat(strcat(strcat(strcat(day, "/"), month), "/"), year));
 
 				cursor = cursor->right;
 			}
@@ -1380,9 +1393,10 @@ void updateItem(tree* root, int validId) {
 		fclose(tempFile);
 		rename(TEMP_FILE, ITEMS_FILE);
 
+		printf("\nItem called %s was updated successfully!\n", updatedItem);
 
 		/* Update log file*/
-		writeToLogFile("Item was updated");
+		writeToLogFile(updatedItem, " item was updated");
 	}
 }
 
@@ -1436,6 +1450,7 @@ void filterThenSearch(tree* root, int userLevel) {
 		puts("There are no items to show!");
 	else {
 		int id = 0, userChoice = 0, counter = 0, currentPrice = 0, isInStock = 0, trueCounter = 0, falseCounter = 0;
+		int lower_price_counter = 0 , higher_price_counter = 0 , earlier_date_counter = 0, later_date_counter = 0;
 		float price = 0.0;
 		char  userInput1[SIZE] = { 0 }, userInput2[SIZE] = { 0 }, inputId[SIZE] = { 0 }, strTemp[SIZE] = { 0 }, buffer;
 		bool validInput = FALSE;
@@ -1450,9 +1465,9 @@ void filterThenSearch(tree* root, int userLevel) {
 
 		do {
 			scanf_s("%s", &userInput1, SIZE);
-			if (!isInputValid(userInput1, 1, 7))
+			if (!isInputValid(userInput1, FIRST_OPTION_ON_MENU, LAST_OPTION_ON_FILTER_AND_SEARCH_MENU))
 				printf("Wrong input!\nEnter your choice: > ");
-		} while (!isInputValid(userInput1, 1, 7));
+		} while (!isInputValid(userInput1, FIRST_OPTION_ON_MENU, LAST_OPTION_ON_FILTER_AND_SEARCH_MENU));
 
 		userChoice = atoi(userInput1);
 
@@ -1482,8 +1497,8 @@ void filterThenSearch(tree* root, int userLevel) {
 			}
 
 			/* Update log file */
-			writeToLogFile("Search by manufacturer was activated");
-			if (userLevel != 1) {
+			writeToLogFile("", "Search function filtered by manufacturer was activated");
+			if (userLevel != USER_LEVEL) {
 				do {
 					printf("\nDo you want to update an item? [y/n]: > ");
 					scanf_s("%s", &userInput1, SIZE);
@@ -1515,8 +1530,6 @@ void filterThenSearch(tree* root, int userLevel) {
 					return;
 			}
 
-
-
 			break;
 		}
 		case 2: { // model
@@ -1544,7 +1557,7 @@ void filterThenSearch(tree* root, int userLevel) {
 			}
 
 			/* Update log file */
-			writeToLogFile("Search by model was activated");
+			writeToLogFile("", "Search function filtered by model was activated");
 			if (userLevel != 1) {
 				do {
 					printf("\nDo you want to update an item? [y/n]: > ");
@@ -1613,7 +1626,7 @@ void filterThenSearch(tree* root, int userLevel) {
 			}
 
 			/* Update log file */
-			writeToLogFile("Search by manufacturer & model was activated");
+			writeToLogFile("", "Search function filtered by manufacturer & model was activated");
 
 			if (userLevel != 1) {
 				do {
@@ -1653,9 +1666,9 @@ void filterThenSearch(tree* root, int userLevel) {
 				printf("\nPlease enter the price: > ");
 				scanf_s("%s", userInput1, SIZE);
 				scanf_s("%c", &buffer, 1); // temp statement to clear buffer
-				if (!isInputFloat(userInput1, 0.0, 9999.99))
+				if (!isInputFloat(userInput1, MIN_PRICE, MAX_PRICE))
 					printf("\nWrong input!\n");
-			} while (!isInputFloat(userInput1, 0.0, 9999.99));
+			} while (!isInputFloat(userInput1, MIN_PRICE, MAX_PRICE));
 
 			currentPrice = atoi(userInput1);
 
@@ -1679,6 +1692,7 @@ void filterThenSearch(tree* root, int userLevel) {
 
 				while (cursor != NULL) {
 					if (cursor->data.price > currentPrice) {
+						higher_price_counter++;
 						printItem(cursor->data);
 						validId[cursor->data.id] = cursor->data.id;
 						cursor = cursor->right;
@@ -1691,6 +1705,7 @@ void filterThenSearch(tree* root, int userLevel) {
 
 				while (cursor != NULL) {
 					if (cursor->data.price < currentPrice) {
+						lower_price_counter++;
 						printItem(cursor->data);
 						validId[cursor->data.id] = cursor->data.id;
 						cursor = cursor->right;
@@ -1701,39 +1716,46 @@ void filterThenSearch(tree* root, int userLevel) {
 			}
 
 			/* Update log file */
-			writeToLogFile("Search by price was activated");
+			writeToLogFile("","Search function filtered by price was activated");
 
-			if (userLevel != 1) {
-				do {
-					printf("\nDo you want to update an item? [y/n]: > ");
-					scanf_s("%s", &userInput1, SIZE);
+			if (userLevel != USER_LEVEL) {
+				if ((lower_price_counter > 0 && higher_price_counter > 0) || (lower_price_counter == 0 && higher_price_counter > 0) || (lower_price_counter > 0 && higher_price_counter == 0)) {
+					do {
+						printf("\nDo you want to update an item? [y/n]: > ");
+						scanf_s("%s", &userInput1, SIZE);
 
-					if (strlen(userInput1) == 1 && isalpha(userInput1[0])) {
-						userInput1[0] = tolower(userInput1[0]);
-						if (userInput1[0] == 'y' || userInput1[0] == 'n')
-							break;
+						if (strlen(userInput1) == 1 && isalpha(userInput1[0])) {
+							userInput1[0] = tolower(userInput1[0]);
+							if (userInput1[0] == 'y' || userInput1[0] == 'n')
+								break;
+							else
+								puts("Wrong input!");
+						}
 						else
 							puts("Wrong input!");
+
+					} while (!(strlen(userInput1) == 1 && isalpha(userInput1[0]) && (userInput1[0] == 'y' || userInput1[0] == 'n')));
+
+					if (userInput1[0] == 'y') {
+						do {
+							printf("\nPlease enter one of the following item's ID you want to update: > ");
+							scanf_s("%s", inputId, SIZE);
+							if (atoi(inputId) == 0 || !(validId[atoi(inputId)] == atoi(inputId)))
+								printf("Invalid ID\n");
+						} while ((atoi(inputId) == 0) || !(validId[atoi(inputId)] == atoi(inputId)));
+
+						id = atoi(inputId);
+						updateItem(root, id);
 					}
-					else
-						puts("Wrong input!");
-
-				} while (!(strlen(userInput1) == 1 && isalpha(userInput1[0]) && (userInput1[0] == 'y' || userInput1[0] == 'n')));
-
-				if (userInput1[0] == 'y') {
-					do {
-						printf("\nPlease enter one of the following item's ID you want to update: > ");
-						scanf_s("%s", inputId, SIZE);
-						if (atoi(inputId) == 0 || !(validId[atoi(inputId)] == atoi(inputId)))
-							printf("Invalid ID\n");
-					} while ((atoi(inputId) == 0) || !(validId[atoi(inputId)] == atoi(inputId)));
-
-					id = atoi(inputId);
-					updateItem(root, id);
+					else if (userInput1[0] == 'n')
+						return;
 				}
-				else if (userInput1[0] == 'n')
-					return;
+				else if (lower_price_counter == 0 || higher_price_counter == 0)
+					printf("\nNo such items!\n");
 			}
+			if (userLevel == USER_LEVEL && (lower_price_counter == 0 || higher_price_counter == 0))
+				printf("\nNo such items!\n");
+				
 			break;
 		}
 		case 5: {
@@ -1741,9 +1763,9 @@ void filterThenSearch(tree* root, int userLevel) {
 				printf("\nEnter value to see products that are in stock or not (1 - TRUE , 0 - FALSE) : > ");
 				scanf_s("%s", userInput1, SIZE);
 
-				if (!(isInputValid(userInput1, 0, 1)))
+				if (!(isInputValid(userInput1, FALSE, TRUE)))
 					printf("Wrong input!\n");
-			} while (!(isInputValid(userInput1, 0, 1)));
+			} while (!(isInputValid(userInput1, FALSE, TRUE)));
 
 			isInStock = atoi(userInput1);
 			printf("\n");
@@ -1766,8 +1788,8 @@ void filterThenSearch(tree* root, int userLevel) {
 			}
 
 			/* Update log file */
-			writeToLogFile("Search by availability was activated");
-			if (userLevel != 1) {
+			writeToLogFile("", "Search function filtered by availability was activated");
+			if (userLevel != USER_LEVEL) {
 				if ((falseCounter > 0 && trueCounter > 0) || (falseCounter == 0 && trueCounter > 0) || (falseCounter > 0 && trueCounter == 0)) {
 					do {
 						printf("\nDo you want to update an item? [y/n]: > ");
@@ -1802,7 +1824,7 @@ void filterThenSearch(tree* root, int userLevel) {
 				else if (falseCounter == 0 || trueCounter == 0)
 					printf("No such items!\n");
 			}
-			if (userLevel == 1 && (falseCounter == 0 || trueCounter == 0))
+			if (userLevel == USER_LEVEL && (falseCounter == 0 || trueCounter == 0))
 				printf("No such items!\n");
 
 			break;
@@ -1842,6 +1864,7 @@ void filterThenSearch(tree* root, int userLevel) {
 			if (userInput1[0] == 'e') { // earlier date
 				while (cursor != NULL) {
 					if (cursor->data.manufacturingDate.year <= tempDate.year && cursor->data.manufacturingDate.month <= tempDate.month && cursor->data.manufacturingDate.day < tempDate.day) {
+						earlier_date_counter++;
 						printItem(cursor->data);
 						validId[cursor->data.id] = cursor->data.id;
 						cursor = cursor->right;
@@ -1854,6 +1877,7 @@ void filterThenSearch(tree* root, int userLevel) {
 
 				while (cursor != NULL) {
 					if (cursor->data.manufacturingDate.year >= tempDate.year && (cursor->data.manufacturingDate.month >= tempDate.month || cursor->data.manufacturingDate.day >= tempDate.day)) {
+						later_date_counter++;
 						printItem(cursor->data);
 						validId[cursor->data.id] = cursor->data.id;
 						cursor = cursor->right;
@@ -1864,39 +1888,47 @@ void filterThenSearch(tree* root, int userLevel) {
 			}
 
 			/* Update log file */
-			writeToLogFile("Search by date was activated");
+			writeToLogFile("", "Search function filtered by date was activated");
 
-			if (userLevel != 1) {
-				do {
-					printf("\nDo you want to update an item? [y/n]: > ");
-					scanf_s("%s", &userInput1, SIZE);
+			if (userLevel != USER_LEVEL) {
+				if ((earlier_date_counter > 0 && later_date_counter > 0) || (earlier_date_counter == 0 && later_date_counter > 0) || (earlier_date_counter > 0 && later_date_counter == 0)) {
+					do {
+						printf("\nDo you want to update an item? [y/n]: > ");
+						scanf_s("%s", &userInput1, SIZE);
 
-					if (strlen(userInput1) == 1 && isalpha(userInput1[0])) {
-						userInput1[0] = tolower(userInput1[0]);
-						if (userInput1[0] == 'y' || userInput1[0] == 'n')
-							break;
+						if (strlen(userInput1) == 1 && isalpha(userInput1[0])) {
+							userInput1[0] = tolower(userInput1[0]);
+							if (userInput1[0] == 'y' || userInput1[0] == 'n')
+								break;
+							else
+								puts("Wrong input!");
+						}
 						else
 							puts("Wrong input!");
+
+					} while (!(strlen(userInput1) == 1 && isalpha(userInput1[0]) && (userInput1[0] == 'y' || userInput1[0] == 'n')));
+
+					if (userInput1[0] == 'y') {
+						do {
+							printf("\nPlease enter one of the following item's ID you want to update: > ");
+							scanf_s("%s", inputId, SIZE);
+							if (atoi(inputId) == 0 || !(validId[atoi(inputId)] == atoi(inputId)))
+								printf("Invalid ID\n");
+						} while ((atoi(inputId) == 0) || !(validId[atoi(inputId)] == atoi(inputId)));
+
+						id = atoi(inputId);
+						updateItem(root, id);
 					}
-					else
-						puts("Wrong input!");
-
-				} while (!(strlen(userInput1) == 1 && isalpha(userInput1[0]) && (userInput1[0] == 'y' || userInput1[0] == 'n')));
-
-				if (userInput1[0] == 'y') {
-					do {
-						printf("\nPlease enter one of the following item's ID you want to update: > ");
-						scanf_s("%s", inputId, SIZE);
-						if (atoi(inputId) == 0 || !(validId[atoi(inputId)] == atoi(inputId)))
-							printf("Invalid ID\n");
-					} while ((atoi(inputId) == 0) || !(validId[atoi(inputId)] == atoi(inputId)));
-
-					id = atoi(inputId);
-					updateItem(root, id);
+					else if (userInput1[0] == 'n')
+						return;
 				}
-				else if (userInput1[0] == 'n')
-					return;
+				else if (earlier_date_counter == 0 || later_date_counter == 0)
+					printf("\nNo such items!\n");
 			}
+
+			if (userLevel == USER_LEVEL && (earlier_date_counter == 0 || later_date_counter == 0))
+				printf("\nNo such items!\n");
+
 			break;
 		}
 		case 7: { return; break; }
@@ -1910,12 +1942,12 @@ bool isItemExistsByBoolStr(tree* root, char* strInput) {
 	char temp[SIZE] = { 0 };
 	tree* cursor = root;
 
-	if (cursor->data.isInStock == 1)
+	if (cursor->data.isInStock == TRUE)
 		strcpy(temp, "TRUE");
 	else
 		strcpy(temp, "FALSE");
 
-	if (strcmp(temp, strInput) == 0)
+	if (strcmp(temp, strInput) == FALSE)
 		return TRUE;
 	else
 		return FALSE;
