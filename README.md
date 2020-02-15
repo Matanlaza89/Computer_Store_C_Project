@@ -4,7 +4,7 @@
 <p>
 A customized information management system (computer shop) according to the requirements ("client") using the tools I learned that included working with text files and data structures.
 </p>
-<h5><u>User manual:</u></h5>
+<h4><u>User manual:</u></h4>
 <p>
 <br><br>
 - 1. items.txt file is necessary for running the project <br>
