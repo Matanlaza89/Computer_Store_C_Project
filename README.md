@@ -6,7 +6,6 @@ A customized information management system (computer shop) according to the requ
 </p>
 <h4><u>User manual:</u></h4>
 <p>
-<br><br>
 - 1. items.txt file is necessary for running the project <br>
 - 2. Username: admin , Password: admin <br>
 </p>
