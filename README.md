@@ -4,6 +4,12 @@
 <p>
 A customized information management system (computer shop) according to the requirements ("client") using the tools I learned that included working with text files and data structures.
 </p>
+<p>
+<br><br>
+<u>User manual:</u>
+- 1. items.txt file is necessary for running the project <br>
+- 2. Username: admin , Password: admin <br>
+</p>
 <table>
     <tr>
             <td><img src="https://github.com/Matanlaza89/Computer_Store_C_Project/blob/master/images/add%20item.JPG" alt=""></td>
