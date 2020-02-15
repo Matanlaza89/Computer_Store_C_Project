@@ -1,4 +1,4 @@
-/* Written by: Matan Leizerovich 302674304 */
+/* Written by: Matan Leizerovich */
 
 
 /******************************************************************************

@@ -1,34 +1,40 @@
 
 
-<h1><u>Welcome to My Advanced Programming Final Project using C</u></h1>
+<h2><u>Welcome to My Advanced Programming Final Project using C</u></h2>
 <p>
-Description...
+A customized information management system (computer shop) according to the requirements ("client") using the tools I learned that included working with text files and data structures.
 </p>
 <table>
     <tr>
-            <td><img src="https://github.com/natylaza89/My-Django-Queuing-Management-System/blob/master/images/main.png" alt=""></td>
-            <td><img src="https://github.com/natylaza89/My-Django-Queuing-Management-System/blob/master/images/contact_us.png" alt=""></td>
-            <td><img src="https://github.com/natylaza89/My-Django-Queuing-Management-System/blob/master/images/aboutus.png" alt=""></td>
+            <td><img src="https://github.com/Matanlaza89/Computer_Store_C_Project/blob/master/images/add%20item.JPG" alt=""></td>
+            <td><img src="https://github.com/Matanlaza89/Computer_Store_C_Project/blob/master/images/admin%20level%20menu.JPG" alt=""></td>
+            <td><img src="https://github.com/Matanlaza89/Computer_Store_C_Project/blob/master/images/delete%20user.JPG" alt=""></td>
     </tr>
         <tr>
-            <td><img src="https://github.com/natylaza89/My-Django-Queuing-Management-System/blob/master/images/calendar_treatments.png" alt=""></td>
-            <td><img src="https://github.com/natylaza89/My-Django-Queuing-Management-System/blob/master/images/day_treatment.png" alt=""></td>
-            <td><img src="https://github.com/natylaza89/My-Django-Queuing-Management-System/blob/master/images/my_treatments.png" alt=""></td>
+            <td><img src="https://github.com/Matanlaza89/Computer_Store_C_Project/blob/master/images/display%20users.JPG" alt=""></td>
+            <td><img src="https://github.com/Matanlaza89/Computer_Store_C_Project/blob/master/images/items%20on%20store.JPG" alt=""></td>
+            <td><img src="https://github.com/Matanlaza89/Computer_Store_C_Project/blob/master/images/login.JPG" alt=""></td>
     </tr>
         <tr>
-            <td><img src="https://github.com/natylaza89/My-Django-Queuing-Management-System/blob/master/images/email_cancelation_notification.png" alt=""></td>
-            <td><img src="https://github.com/natylaza89/My-Django-Queuing-Management-System/blob/master/images/email_notification.png" alt=""></td>
-            <td><img src="https://github.com/natylaza89/My-Django-Queuing-Management-System/blob/master/images/google_calendar.png" alt=""></td>
+            <td><img src="https://github.com/Matanlaza89/Computer_Store_C_Project/blob/master/images/new%20user.JPG" alt=""></td>
+            <td><img src="https://github.com/Matanlaza89/Computer_Store_C_Project/blob/master/images/search.JPG" alt=""></td>
+            <td><img src="https://github.com/Matanlaza89/Computer_Store_C_Project/blob/master/images/super%20user%20menu.JPG" alt=""></td>
+    </tr>
+	<tr>
+            <td><img src="https://github.com/Matanlaza89/Computer_Store_C_Project/blob/master/images/update%20user.JPG" alt=""></td>
+            <td><img src="https://github.com/Matanlaza89/Computer_Store_C_Project/blob/master/images/user%20level%20main.JPG" alt=""></td>
     </tr>
 </table>
 
 <h1><u>Console Application Features/Abilites</u></h1>
 <p>
-- 1... <br>
-- 2... <br>
-
+- 1. Show items <br>
+- 2. Search item filtered by parameter <br>
+- 3. Add an item <br>
+- 4. Update an item <br>
+- 5. Delete an item <br>
+- 6. Display users <br>
+- 7. Add user <br>
+- 8. Update user <br>
+- 9. Delete user <br>
 </p>
-
-
-
-
